@@ -39,6 +39,7 @@ int Nodo::Obtienedato()
 class LSE
 {	private:
 		Nodo *Inicio;
+ 		Nodo *Fin;
 	public:
 		void InsertarI(int);
 		void InsertarF(int);
@@ -52,9 +53,138 @@ class LSE
 		Nodo *Buscar(int);
 		void Borrar(int);
 };
+void LSE::InsertarI(int x)
+{      
+	if(!Inicio)
+	{	
+		Inicio=new Nodo(x);
+		Fin=Inicio;
+	}
+	else
+	{
+		Nodo *helpx3=new Nodo(x);
+        	helpx3->Asignasig(Inicio);
+        	Inicio=helpx3;
+	}
+}
+void LSE::InsertarF(int x)
+{
+    if(Inicio==NULL && Fin==NULL)
+    
+    {
+    	Inicio=new Nodo(x);
+    	Fin=Inicio;
+    }
+    
+    else
+    {
+    	Nodo *help=new Nodo(x);
+        Fin->Asignasig(help);
+        Fin=help;
+    }
+}
 
-
-
+void LSE::Imprimir()
+{
+    if(!Inicio)
+    cout<<"Lista Vacia"<<endl;
+    else
+        {
+            Nodo *Aux=Inicio;
+            while(Aux!=NULL)
+                {
+                    Aux->Imprimir();
+                    Aux=Aux->Obtienesig();
+                }
+        }
+}
+void LSE::BorrarI()
+{
+    if(!Inicio)
+        cout<<"Lista Vacia"<<endl;
+    else
+    {
+    	if(Inicio==Fin)
+        {
+            delete Inicio;
+            delete Fin;
+            Inicio=NULL;
+            Fin=NULL;
+        }
+        else
+        {
+        	Nodo *hay;
+        	Inicio=Inicio->Obtienesig();
+            hay->Asignasig(NULL);
+            delete hay;
+        }
+    }
+}
+void LSE::BorrarF()
+{    if(!Inicio)
+    cout<<"Lista Vacia";
+else
+{    if(Inicio==Fin)
+{    delete Inicio;
+    Inicio=NULL;
+    Fin=NULL;
+}
+else
+{    Nodo *Ad;
+    Ad=Inicio;
+    while(Ad->Obtienesig()!=Fin)
+    {    
+        Ad=Ad->Obtienesig();
+    }
+    Ad->Asignasig(NULL);
+    delete Fin;
+    Fin=Ad;
+}
+}
+}
+int LSE::Contar()
+{    int ESCA=0;
+    if(!Inicio)       ESCA=0;
+    else
+    {    Nodo *REC=Inicio;
+        while(REC!=NULL)
+        {    ESCA++;
+            REC=REC->Obtienesig();
+        }
+    }
+return ESCA;
+}
+Nodo* LSE::Buscar(int x)
+{
+    Nodo *covid=Inicio;
+    if(Inicio)
+    {    while (covid!=NULL)
+    {    if (covid->Obtienedato()==x)
+        return covid;
+        covid=covid->Obtienesig();
+    }
+    }
+    return covid;
+}
+void LSE::Borrar(int x)
+{      Nodo *simi=Buscar(x);
+    if(simi==NULL)       cout<<"DATO NO ENCONTRADO";
+    else
+    {    if(simi==Inicio)           BorrarI();
+    else
+    {
+        if(simi->Obtienesig()==NULL)    BorrarF();
+        else
+        {    Nodo *XL=Inicio;
+            while(XL->Obtienesig()!=simi)
+                XL=XL->Obtienesig();
+            XL->Asignasig(simi->Obtienesig());
+            simi->Asignasig(NULL);
+            delete simi;
+        }
+    }
+    }
+}
 
 
 
@@ -64,7 +194,7 @@ int main(int argc, const char * argv[])
     
     
     
-    LDE A;
+    LSE A;
     int opc, dato;
     do{
         cout<<"1.- Insertar Inicio"<<endl;
